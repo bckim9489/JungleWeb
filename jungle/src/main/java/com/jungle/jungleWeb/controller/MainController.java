@@ -28,7 +28,6 @@ public class MainController {
 
     @GetMapping("/api/all")
     public List<User> getUserList(){
-
         return userService.findAll();
     }
 
