@@ -38,20 +38,33 @@ logging:
         type:
           descriptor:
             sql: DEBUG
-
 ---
 spring:
   config:
     activate:
       on-profile: "local"
-cors:
-  allowed-origin: "http://localhost:3000"
+  cors:
+    allowed-origin: "http://localhost:3000"
 
+server:
+  port: 443
+  ssl:
+    enabled: true
+    key-store: src/main/resources/cert_and_key.p12
+    key-store-password: 1q2w3e4r
+    key-store-type: PKCS12
 ---
-
 spring:
   config:
     activate:
       on-profile: "prod"
-cors:
+  cors:
     allowed-origin: "https://www.jungleweb.monster"
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: cert_and_key.p12
+    key-store-password: 1q2w3e4r
+    key-store-type: PKCS12
