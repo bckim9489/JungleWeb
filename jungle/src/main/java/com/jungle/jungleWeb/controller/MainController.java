@@ -1,6 +1,8 @@
 package com.jungle.jungleweb.controller;
 
+import com.jungle.jungleweb.domain.entity.Board;
 import com.jungle.jungleweb.domain.entity.User;
+import com.jungle.jungleweb.service.BoardService;
 import com.jungle.jungleweb.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,12 @@ import java.util.List;
 @RequestMapping("/")
 public class MainController {
     private UserService userService;
+    private BoardService boardService;
 
     @Autowired
-    public MainController(UserService userService) {
+    public MainController(UserService userService, BoardService boardService) {
         this.userService = userService;
+        this.boardService = boardService;
     }
 
     @GetMapping("/api/test")
@@ -31,4 +35,8 @@ public class MainController {
         return userService.findAll();
     }
 
+    @GetMapping("/api/board")
+    public List<Board> getBoardList(){
+        return boardService.findAll();
+    }
 }
