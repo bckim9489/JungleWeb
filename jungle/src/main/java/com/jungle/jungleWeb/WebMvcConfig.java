@@ -10,13 +10,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Value("${spring.cors.allowed-origin:http://localhost:3000}")
+    @Value("${spring.cors.allowed-origin:https://www.jungleweb.monster}")
     private String allowedOrigin;
     @Override
     public void addCorsMappings(CorsRegistry registry){
         //로컬
         registry.addMapping("/**")
                 .allowedOrigins(allowedOrigin)
-                .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE");
+                .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }
