@@ -18,6 +18,12 @@ public class Board {
     @Column(name = "BID")
     private int bid;
 
+    @Column(name = "UID")
+    private int uid;
+
+    @Column(name = "CONTENTS")
+    private String contents;
+
     @Column(name ="TITLE")
     private String title;
 
