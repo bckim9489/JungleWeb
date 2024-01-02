@@ -20,7 +20,7 @@ public class User {
     @Column(name ="USER_ID", nullable = false, unique = true)
     private String userId;
 
-    @Column(name ="UPDATE_DT")
-    private LocalDate updateDt;
+    @Column(name ="LAST_DT")
+    private LocalDate lastDt;
 
 }

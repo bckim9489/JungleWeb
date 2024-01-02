@@ -1,10 +1,8 @@
 package com.jungle.jungleweb.domain.entity;
 
+import com.jungle.jungleweb.domain.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor( access = AccessLevel.PROTECTED)
@@ -12,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name="BOARD_TBL")
-public class Board {
+public class Board extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BID")
@@ -27,9 +25,14 @@ public class Board {
     @Column(name ="TITLE")
     private String title;
 
-    @Column(name ="FIRST_DT")
-    private LocalDateTime firstDt;
+    @Column(name = "USE_YN")
+    private char useYn;
 
-    @Column(name ="LAST_DT")
-    private LocalDateTime lastDt;
+    @Builder
+    public Board(int uid, String title, String contents, char useYn) {
+        this.uid = uid;
+        this.title = title;
+        this.contents = contents;
+        this.useYn = useYn;
+    }
 }
