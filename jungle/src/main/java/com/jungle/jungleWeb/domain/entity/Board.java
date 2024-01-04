@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor( access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -16,9 +17,6 @@ public class Board extends BaseTimeEntity {
     @Column(name = "BID")
     private int bid;
 
-    @Column(name = "UID")
-    private int uid;
-
     @Column(name = "CONTENTS")
     private String contents;
 
@@ -28,11 +26,7 @@ public class Board extends BaseTimeEntity {
     @Column(name = "USE_YN")
     private char useYn;
 
-    @Builder
-    public Board(int uid, String title, String contents, char useYn) {
-        this.uid = uid;
-        this.title = title;
-        this.contents = contents;
-        this.useYn = useYn;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UID")
+    private User user;
 }

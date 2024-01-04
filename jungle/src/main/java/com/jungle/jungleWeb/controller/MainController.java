@@ -1,13 +1,14 @@
 package com.jungle.jungleweb.controller;
 
+import com.jungle.jungleweb.domain.BoardUserDTO;
 import com.jungle.jungleweb.domain.entity.Board;
 import com.jungle.jungleweb.domain.entity.User;
 import com.jungle.jungleweb.service.BoardService;
 import com.jungle.jungleweb.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -35,24 +36,31 @@ public class MainController {
         return userService.findAll();
     }
 
-    @GetMapping("/api/board")
-    public List<Board> getBoardList(){
-        return boardService.findAll();
+
+    /* BoardController */
+    @PostMapping("/api/board")
+    public Page<BoardUserDTO> getBoardList(@RequestBody Map<String, Object> commandMap){
+        int page = Integer.parseInt(commandMap.get("page").toString());
+        int size = Integer.parseInt(commandMap.get("size").toString());
+
+        return boardService.findAll(page, size);
     }
 
     @GetMapping("/api/board/{bid}")
-    public Board getBoardDetail(@PathVariable("bid") int bid){
+    public BoardUserDTO getBoardDetail(@PathVariable("bid") int bid){
         return boardService.findOne(bid);
     }
 
-    @PostMapping("/api/board")
+    @PostMapping("/api/insert")
     public Board insertBoard(@RequestBody Map<String, Object> commandMap){
         String contents = commandMap.get("contents").toString();
         String title = commandMap.get("title").toString();
         int uid = Integer.parseInt(commandMap.get("uid").toString());
 
+        User user = userService.findOne(uid);
+
         Board saveParams = Board.builder()
-                .uid(uid)
+                .user(user)
                 .title(title)
                 .useYn('Y')
                 .contents(contents)
@@ -68,9 +76,11 @@ public class MainController {
         String title = commandMap.get("title").toString();
         int uid = Integer.parseInt(commandMap.get("uid").toString());
 
+        User user = userService.findOne(uid);
+
         Board saveParams = Board.builder()
                 .bid(bid)
-                .uid(uid)
+                .user(user)
                 .title(title)
                 .useYn('Y')
                 .contents(contents)
@@ -84,12 +94,6 @@ public class MainController {
         int bid = Integer.parseInt(commandMap.get("bid").toString());
         int uid = Integer.parseInt(commandMap.get("uid").toString());
 
-        Board saveParams = Board.builder()
-                .bid(bid)
-                .uid(uid)
-                .useYn('N')
-                .build();
-
-        return boardService.updateOne(saveParams);
+        return boardService.deleteOne(bid, uid);
     }
 }
