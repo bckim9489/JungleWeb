@@ -28,9 +28,9 @@ public class BoardService {
                 .build();
     }
 
-    public Page<BoardUserDTO> findAll(int page, int size){
+    public Page<BoardUserDTO> findAll(int page, int size, String search){
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Board> boards = boardRepository.findByUseYn('Y', pageRequest);
+        Page<Board> boards = boardRepository.findByUseYnAndTitleContaining('Y', search, pageRequest);
         return boards.map(this::convertToDto);
         /*
         return boards.stream()

@@ -42,8 +42,9 @@ public class MainController {
     public Page<BoardUserDTO> getBoardList(@RequestBody Map<String, Object> commandMap){
         int page = Integer.parseInt(commandMap.get("page").toString());
         int size = Integer.parseInt(commandMap.get("size").toString());
+        String search = commandMap.getOrDefault("search", "").toString();
 
-        return boardService.findAll(page, size);
+        return boardService.findAll(page, size, search);
     }
 
     @GetMapping("/api/board/{bid}")

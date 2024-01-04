@@ -11,5 +11,5 @@ import java.util.List;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Integer> {
-    Page<Board> findByUseYn(char y, Pageable pageable);
+    Page<Board> findByUseYnAndTitleContaining(char y, String search, Pageable pageable);
 }
