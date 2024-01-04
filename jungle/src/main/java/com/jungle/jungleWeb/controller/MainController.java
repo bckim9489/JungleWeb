@@ -93,8 +93,7 @@ public class MainController {
     @DeleteMapping("/api/board")
     public Board deleteBoard(@RequestBody Map<String, Object> commandMap){
         int bid = Integer.parseInt(commandMap.get("bid").toString());
-        int uid = Integer.parseInt(commandMap.get("uid").toString());
 
-        return boardService.deleteOne(bid, uid);
+        return boardService.deleteOne(bid);
     }
 }

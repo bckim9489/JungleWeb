@@ -9,9 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @AllArgsConstructor
 @Service
 public class BoardService {
@@ -53,7 +50,7 @@ public class BoardService {
     public Board updateOne(Board board){
         return boardRepository.save(board);
     }
-    public Board deleteOne(int bid, int uid){
+    public Board deleteOne(int bid){
         Board board = boardRepository.findById(bid)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
 
