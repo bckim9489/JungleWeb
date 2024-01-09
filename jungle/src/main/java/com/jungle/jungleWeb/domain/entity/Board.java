@@ -29,4 +29,7 @@ public class Board extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UID")
     private User user;
+
+    @Column(name="CID")
+    private Integer cid;
 }

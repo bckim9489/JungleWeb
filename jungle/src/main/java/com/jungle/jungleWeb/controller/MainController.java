@@ -40,11 +40,16 @@ public class MainController {
     /* BoardController */
     @PostMapping("/api/board")
     public Page<BoardUserDTO> getBoardList(@RequestBody Map<String, Object> commandMap){
-        int page = Integer.parseInt(commandMap.get("page").toString());
+        int page = Integer.parseInt(commandMap.getOrDefault("page", "0").toString());
         int size = Integer.parseInt(commandMap.get("size").toString());
         String search = commandMap.getOrDefault("search", "").toString();
 
         return boardService.findAll(page, size, search);
+    }
+
+    @GetMapping("/api/comment/{bid}")
+    public List<BoardUserDTO> getCommentList(@PathVariable("bid") int bid){
+        return boardService.findCommentList(bid);
     }
 
     @GetMapping("/api/board/{bid}")
@@ -55,8 +60,17 @@ public class MainController {
     @PostMapping("/api/insert")
     public Board insertBoard(@RequestBody Map<String, Object> commandMap){
         String contents = commandMap.get("contents").toString();
-        String title = commandMap.get("title").toString();
+        String title = commandMap.getOrDefault("title", "").toString();
         int uid = Integer.parseInt(commandMap.get("uid").toString());
+        Object cidValue = commandMap.get("cid"); // "cid" 키에 해당하는 값을 가져옴
+        Integer cid = null; // 기본값 설정
+
+        if (cidValue != null) {
+            try {
+                cid = Integer.parseInt(cidValue.toString());
+            } catch (NumberFormatException ignored) {
+            }
+        }
 
         User user = userService.findOne(uid);
 
@@ -65,6 +79,7 @@ public class MainController {
                 .title(title)
                 .useYn('Y')
                 .contents(contents)
+                .cid(cid)
                 .build();
 
         return boardService.insertOne(saveParams);
@@ -96,4 +111,5 @@ public class MainController {
 
         return boardService.deleteOne(bid);
     }
+
 }

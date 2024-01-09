@@ -9,6 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Service
 public class BoardService {
@@ -22,12 +25,14 @@ public class BoardService {
                 .contents(board.getContents())
                 .useYn(board.getUseYn())
                 .userId(board.getUser().getUserId())
+                .firstDt(board.getFirstDt())
+                .userNm(board.getUser().getUserNm())
                 .build();
     }
 
     public Page<BoardUserDTO> findAll(int page, int size, String search){
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Board> boards = boardRepository.findByUseYnAndTitleContaining('Y', search, pageRequest);
+        Page<Board> boards = boardRepository.findByUseYnAndCidAndTitleContaining('Y', null, search, pageRequest);
         return boards.map(this::convertToDto);
         /*
         return boards.stream()
@@ -36,6 +41,13 @@ public class BoardService {
          */
     }
 
+    public List<BoardUserDTO> findCommentList(int bid){
+        List<Board> boards = boardRepository.findByCid(bid);
+        return boards.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+
+    }
     public BoardUserDTO findOne(int bid){
         Board board = boardRepository.findById(bid)
                 .orElseThrow(()->new ResourceNotFoundException("Board", "bid", bid));
